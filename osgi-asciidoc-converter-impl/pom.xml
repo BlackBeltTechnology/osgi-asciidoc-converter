@@ -16,10 +16,64 @@
     <description>OSGi Asciidoc converter services Implementation</description>
 
     <dependencies>
+        <!--
         <dependency>
             <groupId>hu.blackbelt</groupId>
             <artifactId>osgi-asciidoc-converter-api</artifactId>
         </dependency>
+        -->
+        <dependency>
+            <groupId>org.asciidoctor</groupId>
+            <artifactId>asciidoctorj</artifactId>
+            <version>1.5.8.1</version>
+        </dependency>
+<!--
+        <dependency>
+            <groupId>org.asciidoctor</groupId>
+            <artifactId>asciidoctorj-api</artifactId>
+            <version>1.5.8.1</version>
+        </dependency> -->
+<!--
+        <dependency>
+            <groupId>org.asciidoctor</groupId>
+            <artifactId>asciidoctorj-diagram</artifactId>
+            <version>2.0.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.asciidoctor</groupId>
+            <artifactId>asciidoctorj-pdf</artifactId>
+            <version>1.5.3</version>
+        </dependency>
+-->
+        <dependency>
+            <groupId>org.jruby</groupId>
+            <artifactId>jruby-complete</artifactId>
+            <version>9.2.10.0</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>org.osgi</groupId>
+            <artifactId>org.osgi.core</artifactId>
+            <version>6.0.0</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.osgi</groupId>
+            <artifactId>osgi.cmpn</artifactId>
+            <version>6.0.0</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.osgi</groupId>
+            <artifactId>org.osgi.annotation</artifactId>
+            <version>6.0.0</version>
+            <scope>provided</scope>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -28,6 +82,71 @@
                 <groupId>org.apache.felix</groupId>
                 <artifactId>maven-bundle-plugin</artifactId>
                 <extensions>true</extensions>
+                <configuration>
+                    <instructions>
+                        <Embed-Dependency>
+                            asciidoctorj;inline=true,
+                            asciidoctorj-api;inline=true,
+                        </Embed-Dependency>
+<!--
+                        <Export-Package>
+                            org.asciidoctor;version:=1.6.2,
+                            org.asciidoctor.log;version:=1.6.2,
+                            org.asciidoctor.ast;version:=1.6.2,
+                            org.asciidoctor.extension;version:=1.6.2,
+                            org.asciidoctor.syntaxhighlighter;version:=1.6.2,
+                            org.asciidoctor.converter;version:=1.6.2
+                        </Export-Package> -->
+                        <Import-Package>
+                            com.beust.jcommander;resolution:=optional,
+                            *
+                        </Import-Package>
+
+                        <!--                        <Embed-Dependency>
+                            asciidoctorj;inline=true,
+                            asciidoctorj-api;inline=true,
+                            asciidoctorj-diagram;inline=true,
+                            asciidoctorj-pdf;inline=true,
+                            jruby-complete;inline=true,
+                        </Embed-Dependency>
+                        <Export-Package>
+                            org.asciidoctor;version:=2.4.1,
+                            org.asciidoctor.log;version:=2.4.1,
+                            org.asciidoctor.ast;version:=2.4.1,
+                            org.asciidoctor.extension;version:=2.4.1,
+                            org.asciidoctor.syntaxhighlighter;version:=2.4.1,
+                            org.asciidoctor.converter;version:=2.4.1
+                        </Export-Package> -->
+
+                        <!--
+                            com.beust.jcommander;resolution:=optional,
+
+                            com.sun.security.auth.module;resolution:=optional,
+                            javax.annotation.processing;resolution:=optional,
+                            javax.crypto;resolution:=optional,
+                            javax.lang.model;resolution:=optional,
+                            javax.lang.model.element;resolution:=optional,
+                            javax.lang.model.type;resolution:=optional,
+                            javax.lang.model.util;resolution:=optional,
+                            javax.management;resolution:=optional,
+                            javax.script;resolution:=optional,
+                            javax.swing;resolution:=optional,
+                            jnr.a64asm;resolution:=optional,
+                            jnr.x86asm;resolution:=optional,
+                            org.apache.bsf;resolution:=optional,
+                            org.apache.bsf.util;resolution:=optional,
+                            org.apache.tools.ant;resolution:=optional,
+                            org.bouncycastle.jce.provider;resolution:=optional,
+                            org.joda.convert;resolution:=optional,
+                            org.osgi.framework;resolution:=optional,
+                            org.osgi.framework.wiring;resolution:=optional,
+                            org.slf4j;resolution:=optional,
+                            sun.management;resolution:=optional,
+                            sun.misc;resolution:=optional,
+                            sun.nio.ch;resolution:=optional,
+-->
+                    </instructions>
+                </configuration>
             </plugin>
         </plugins>
     </build>
