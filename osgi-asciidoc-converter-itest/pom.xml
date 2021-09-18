@@ -58,14 +58,7 @@
             <version>${pax-exam-version}</version>
             <scope>test</scope>
         </dependency>
-        <!--
-        <dependency>
-            <groupId>org.ops4j.pax.exam</groupId>
-            <artifactId>pax-exam-link-mvn</artifactId>
-            <version>${pax-exam-version}</version>
-            <scope>test</scope>
-        </dependency>
--->
+
         <dependency>
             <groupId>org.ops4j.pax.exam</groupId>
             <artifactId>pax-exam-inject</artifactId>
@@ -96,6 +89,27 @@
             <groupId>org.apache.servicemix.bundles</groupId>
             <artifactId>org.apache.servicemix.bundles.hamcrest</artifactId>
             <version>1.3_1</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jruby</groupId>
+            <artifactId>jruby-complete</artifactId>
+            <version>9.2.19.0</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>hu.blackbelt</groupId>
+            <artifactId>osgi-asciidoc-converter-api</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>hu.blackbelt</groupId>
+            <artifactId>osgi-asciidoc-converter-impl</artifactId>
+            <version>${project.version}</version>
             <scope>test</scope>
         </dependency>
 
@@ -146,17 +160,4 @@
         </plugins>
     </build>
 
-    <!--
-    <properties>
-        <pax-exam-version>5.0.0.M2-SNAPSHOT</pax-exam-version>
-    </properties>
-    <repositories>
-        <repository>
-            <id>ops4j-snapshots-repo</id>
-            <url>https://oss.sonatype.org/content/repositories/ops4j-snapshots</url>
-            <releases><enabled>false</enabled></releases>
-            <snapshots><enabled>true</enabled></snapshots>
-        </repository>
-    </repositories>
-    -->
 </project>

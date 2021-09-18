@@ -5,6 +5,10 @@
     xsi:schemaLocation="http://karaf.apache.org/xmlns/features/v1.5.0 http://karaf.apache.org/xmlns/features/v1.5.0">
 
     <feature name="asciidoc-converter" version="${project.version}" description="AsciiDoc Converter services">
+        <feature prerequisite="true">scr</feature>
+        <bundle>mvn:org.jruby/jruby-complete/${jruby-version}</bundle>
+        <bundle>mvn:hu.blackbelt/osgi-asciidoc-converter-api/${project.version}</bundle>
+        <bundle>mvn:hu.blackbelt/osgi-asciidoc-converter-impl/${project.version}</bundle>
     </feature>
 
 </features>
