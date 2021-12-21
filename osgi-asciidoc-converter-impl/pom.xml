@@ -5,7 +5,7 @@
     <parent>
         <groupId>hu.blackbelt</groupId>
         <artifactId>osgi-asciidoc-converter-parent</artifactId>
-        <version>1.0.0-SNAPSHOT</version>
+        <version>${revision}</version>
     </parent>
     
     <artifactId>osgi-asciidoc-converter-impl</artifactId>
