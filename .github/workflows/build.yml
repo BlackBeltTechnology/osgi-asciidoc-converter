@@ -13,9 +13,9 @@ jobs:
     runs-on: judong
     timeout-minutes: 30
     env: 
-      SIGN_KEY_ID=${{ secrets.GPG_KEYNAME }}
-      SIGN_KEY_PASS=${{ secrets.GPG_PASSPHRASE }}
-      SIGN_KEY=${{ secrets.GPG_SECRET_KEYS }}
+      SIGN_KEY_ID: ${{ secrets.GPG_KEYNAME }}
+      SIGN_KEY_PASS: ${{ secrets.GPG_PASSPHRASE }}
+      SIGN_KEY: ${{ secrets.GPG_SECRET_KEYS }}
     steps:
       - uses: actions/checkout@v2
         with:
