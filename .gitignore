@@ -53,6 +53,7 @@ local.properties
 .recommenders/
 **/.DS_Store
 wercker.env
+**/.flattened-pom.xml
 /**/.wercker
 /**/GSModel.log*
 .release
