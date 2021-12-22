@@ -18,11 +18,10 @@ import org.osgi.service.log.LogService;
 
 import javax.inject.Inject;
 import java.io.*;
+import java.net.MalformedURLException;
 import java.nio.charset.StandardCharsets;
 import java.util.stream.Collectors;
 
-import static hu.blackbelt.asciidoc.converter.KarafTestUtil.karafConfig;
-import static hu.blackbelt.asciidoc.converter.KarafTestUtil.karafStandardRepo;
 import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
 import static org.ops4j.pax.exam.OptionUtils.combine;
 import static org.ops4j.pax.exam.karaf.options.KarafDistributionOption.editConfigurationFilePut;
@@ -46,12 +45,10 @@ public class ServicesTransactionITest {
 
 
     @Configuration
-    public Option[] config() throws FileNotFoundException {
+    public Option[] config() throws MalformedURLException {
 
-        return combine(karafConfig(this.getClass()),
+        return combine(KarafFeatureProvider.karafConfig(this.getClass()),
 
-                features(karafStandardRepo(),
-                        "scr"),
                 mavenBundle("hu.blackbelt", "osgi-asciidoc-converter-api").versionAsInProject(),
                 mavenBundle("hu.blackbelt", "osgi-asciidoc-converter-impl").versionAsInProject(),
 

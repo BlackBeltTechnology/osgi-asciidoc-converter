@@ -1,0 +1,17 @@
+name: Pre release (feature)
+
+on:
+  workflow_run:
+    workflows: java CI with maven
+    branches: feature/*
+    types: completed
+    
+jobs:
+  pre-release:
+    steps:
+      - name: Create Release
+        uses: ncipollo/release-action@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          draft: false
+          prerelease: true
