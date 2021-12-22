@@ -1,0 +1,15 @@
+name: Pre release (feature)
+
+on:
+  create:
+    tags:
+      - 'v[0-9].[0-9].[0-9].[0-9]{8}_[0-9]{6}_.{8}_feature_.*'
+
+jobs:
+  pre-release:
+      - name: Create Release
+        uses: ncipollo/release-action@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          draft: false
+          prerelease: true
