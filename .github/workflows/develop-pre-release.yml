@@ -1,6 +1,12 @@
 name: Pre release (develop)
 
 on:
+  workflow_run:
+    workflows: java CI with maven
+    branches: develop
+    types: completed
+    
+on:
   create:
     tags:
       - 'v[0-9].[0-9].[0-9].[0-9]{8}_[0-9]{6}_.{8}_develop_.*'

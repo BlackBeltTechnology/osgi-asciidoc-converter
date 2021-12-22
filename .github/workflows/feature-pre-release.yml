@@ -1,10 +1,11 @@
 name: Pre release (feature)
 
 on:
-  create:
-    tags:
-      - 'v[0-9].[0-9].[0-9].[0-9]{8}_[0-9]{6}_.{8}_feature_.*'
-
+  workflow_run:
+    workflows: java CI with maven
+    branches: feature/*
+    types: completed
+    
 jobs:
   pre-release:
     steps:
