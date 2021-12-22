@@ -147,12 +147,15 @@
 
                 <configuration>
                     <forkedProcessExitTimeoutInSeconds>1</forkedProcessExitTimeoutInSeconds>
+                    <systemPropertyVariables>
+                        <karafVersion>${karaf-version}</karafVersion>
+                    </systemPropertyVariables>
                 </configuration>
                 <dependencies>
                     <dependency>
                         <groupId>org.apache.maven.surefire</groupId>
                         <artifactId>surefire-junit47</artifactId>
-                        <version>3.0.0-M4</version>
+                        <version>3.0.0-M5</version>
                     </dependency>
                 </dependencies>
             </plugin>
