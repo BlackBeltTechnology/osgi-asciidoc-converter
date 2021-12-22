@@ -150,7 +150,7 @@ jobs:
       - name: Create Release
         uses: marvinpinto/action-automatic-releases@latest
         with:
-          tag: v${{ steps.version.outputs.version }}
+          automatic_release_tag: v${{ steps.version.outputs.version }}
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           title: Release v${{ steps.version.outputs.version }}
           draft: true
