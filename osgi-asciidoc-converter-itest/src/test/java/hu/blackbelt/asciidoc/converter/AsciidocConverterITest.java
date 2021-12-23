@@ -11,6 +11,7 @@ import org.junit.runner.RunWith;
 import org.ops4j.pax.exam.Configuration;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.PaxExam;
+import org.ops4j.pax.exam.options.MavenArtifactUrlReference;
 import org.ops4j.pax.exam.spi.reactors.ExamReactorStrategy;
 import org.ops4j.pax.exam.spi.reactors.PerClass;
 import org.osgi.framework.BundleContext;
@@ -22,14 +23,18 @@ import java.net.MalformedURLException;
 import java.nio.charset.StandardCharsets;
 import java.util.stream.Collectors;
 
-import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
+import static org.ops4j.pax.exam.CoreOptions.maven;
 import static org.ops4j.pax.exam.OptionUtils.combine;
-import static org.ops4j.pax.exam.karaf.options.KarafDistributionOption.editConfigurationFilePut;
 import static org.ops4j.pax.exam.karaf.options.KarafDistributionOption.features;
 
 @RunWith(PaxExam.class)
 @ExamReactorStrategy(PerClass.class)
-public class ServicesTransactionITest {
+public class AsciidocConverterITest {
+
+    public static final String BLACKBELT = "hu.blackbelt";
+    public static final String OSGI_ASCIIDOC_KARAF_FEATURES = "osgi-asciidoc-converter-karaf-features";
+    public static final String FEATURES = "features";
+    public static final String XML = "xml";
 
     @Inject
     LogService log;
@@ -44,18 +49,20 @@ public class ServicesTransactionITest {
     public ExpectedException thrown = ExpectedException.none();
 
 
+    public static MavenArtifactUrlReference osgiAsciidocFeature() {
+        return maven()
+                .groupId(BLACKBELT)
+                .artifactId(OSGI_ASCIIDOC_KARAF_FEATURES)
+                .versionAsInProject()
+                .classifier(FEATURES)
+                .type(XML);
+    }
+
     @Configuration
     public Option[] config() throws MalformedURLException {
 
         return combine(KarafFeatureProvider.karafConfig(this.getClass()),
-
-                mavenBundle("hu.blackbelt", "osgi-asciidoc-converter-api").versionAsInProject(),
-                mavenBundle("hu.blackbelt", "osgi-asciidoc-converter-impl").versionAsInProject(),
-
-                mavenBundle("org.jruby", "jruby-complete").versionAsInProject(),
-
-                editConfigurationFilePut("etc/org.ops4j.pax.web.cfg",
-                        "org.osgi.service.http.port", "8181")
+                features(osgiAsciidocFeature(), "asciidoc-converter")
         );
 
     }
