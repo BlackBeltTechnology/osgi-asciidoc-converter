@@ -8,6 +8,7 @@ on:
     
 jobs:
   pre-release:
+    runs-on: judong
     steps:
       - name: Create Release
         uses: marvinpinto/action-automatic-releases@latest
