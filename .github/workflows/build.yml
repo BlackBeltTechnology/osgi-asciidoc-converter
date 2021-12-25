@@ -1,4 +1,4 @@
-name: java CI with maven
+name: Build project
 
 on:
   push:
@@ -16,6 +16,10 @@ jobs:
       SIGN_KEY_ID: ${{ secrets.GPG_KEYNAME }}
       SIGN_KEY_PASS: ${{ secrets.GPG_PASSPHRASE }}
       SIGN_KEY: ${{ secrets.GPG_SECRET_KEYS }}
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+      message: ${{ steps.message.outputs.message }}
+
     steps:
       - uses: actions/checkout@v2
         with:
@@ -112,12 +116,12 @@ jobs:
       #          -P update-category-versions \
       #          tycho-versions:update-eclipse-metadata
       #
-      - name: Build with Maven
-        run: |-
-          ./mvnw -B -Dstyle.color=always \
-          -Drevision=${{ steps.version.outputs.version }} \
-          -Psign-artifacts,release-judong \
-          deploy
+#      - name: Build with Maven
+#        run: |-
+#          ./mvnw -B -Dstyle.color=always \
+#          -Drevision=${{ steps.version.outputs.version }} \
+#          -Psign-artifacts,release-judong \
+#          deploy
       #      - name: Release P2
       #        run: |-
       #          ./mvnw -B -Dstyle.color=always \
@@ -128,24 +132,22 @@ jobs:
       #          -DskipModules=true \
       #          deploy
 
-      - name: Create success message
-        if: ${{ !failure() && !cancelled() }}
+      - name: Create message
+        id: message
         run: |-
-          echo ":check_mark_button: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}" > build.msg
-          echo "Version: ${{ steps.version.outputs.version }}" >> build.msg
-          echo "Commit: ${{ steps.context.outputs.commitMsg }}" >> build.msg
-
-      - name: Create faliure message
-        if: ${{ failure() }}
-        run: |-
-          echo ":cross_mark: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}" > build.msg
-          echo "Commit: ${{ steps.context.outputs.commitMsg }}" >> build.msg
-
-      - name: Create canceled message
-        if: ${{ cancelled() }}
-        run: |-
-          echo ":warning: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}" > build.msg
-          echo "Commit: ${{ steps.context.outputs.commitMsg }}" >> build.msg
+          if [[ "${{ !failure() && !cancelled() }}" == "true" ]]; then
+            message=":check_mark_button: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+            message="${message}\nVersion: ${{ steps.version.outputs.version }}"
+          fi
+          if [[ "${{ failure() }}" == "true" ]]; then
+            message=":cross_mark: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          fi
+          if [[ "${{ cancelled() }}" == "true" ]]; then
+            message=":warning: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          fi
+          message="${message}\nUser: ${{ steps.context.outputs.userName }} (${{ steps.context.outputs.userEmail }})"
+          message="${message}\nCommit: ${{ steps.context.outputs.commitMsg }}"
+          echo "::set-output name=message::${message}"
 
       - name: Push tag
         uses: mathieudutour/github-tag-action@v6.0
@@ -153,6 +155,14 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           custom_tag: ${{ steps.version.outputs.version }}
 
+  send_message_to_skype:
+    runs-on: judong
+    timeout-minutes: 1
+    needs: [build]
+    steps:
+      - name: Write message to file
+        run: |-
+          echo "${{needs.build.outputs.message}}" > build.msg
       - name: Send message to skype
         uses: Eloco/docker-action-send-skype@v2
         if: always()
@@ -161,3 +171,30 @@ jobs:
           skype_password: ${{ secrets.SKYPE_PASSWORD }}
           skype_ids: 19:0503749da2e44ed9910046678012bdf7@thread.skype
           send_msg_path: build.msg
+
+  release_on_feature:
+    runs-on: judong
+    timeout-minutes: 1
+    needs: [build]
+    if: ${{ github.event.workflow_run.conclusion == 'success' &&  contains('feature', github.ref)}}
+    steps:
+      - name: Create Release
+        uses: marvinpinto/action-automatic-releases@latest
+        with:
+          automatic_release_tag: latest
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          title: Release v${{ steps.version.outputs.version }}
+          draft: true
+          prerelease: false
+
+  release_on_develop:
+    runs-on: judong
+    timeout-minutes: 1
+    if: ${{ github.event.workflow_run.conclusion == 'success' &&  contains('develop', github.ref)}}
+    steps:
+      - name: Create Release
+        uses: ncipollo/release-action@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          draft: false
+          prerelease: true
