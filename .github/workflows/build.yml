@@ -188,7 +188,7 @@ jobs:
     runs-on: judong
     timeout-minutes: 1
     needs: [build]
-    if: needs.build.result == 'success' && contains('feature', github.ref))
+    if: needs.build.result == 'success' && contains('feature', github.ref)
     steps:
       - name: Create Release
         uses: marvinpinto/action-automatic-releases@latest
@@ -203,7 +203,7 @@ jobs:
     runs-on: judong
     timeout-minutes: 1
     needs: [build]
-    if: needs.build.result == 'success' && contains('develop', github.ref))
+    if: needs.build.result == 'success' && contains('develop', github.ref)
     steps:
       - name: Create Release
         uses: ncipollo/release-action@v1
