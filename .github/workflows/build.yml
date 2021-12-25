@@ -134,20 +134,25 @@ jobs:
 
       - name: Create message
         id: message
-        run: |-
-          if [[ "${{ !failure() && !cancelled() }}" == "true" ]]; then
+        if: ${{ !failure() && !cancelled() }}
+          run: |-
             message=":check_mark_button: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
             message="${message}\nVersion: ${{ steps.version.outputs.version }}"
-          fi
-          if [[ "${{ failure() }}" == "true" ]]; then
+            message="${message}\nUser: ${{ steps.context.outputs.userName }} (${{ steps.context.outputs.userEmail }})"
+            message="${message}\nCommit: ${{ steps.context.outputs.commitMsg }}"
+            echo "::set-output name=message::${message}"
+        if: ${{ failure() }}
+          run: |-
             message=":cross_mark: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-          fi
-          if [[ "${{ cancelled() }}" == "true" ]]; then
+            message="${message}\nUser: ${{ steps.context.outputs.userName }} (${{ steps.context.outputs.userEmail }})"
+            message="${message}\nCommit: ${{ steps.context.outputs.commitMsg }}"
+            echo "::set-output name=message::${message}"
+        if: ${{ cancelled() }}
+          run: |-
             message=":warning: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-          fi
-          message="${message}\nUser: ${{ steps.context.outputs.userName }} (${{ steps.context.outputs.userEmail }})"
-          message="${message}\nCommit: ${{ steps.context.outputs.commitMsg }}"
-          echo "::set-output name=message::${message}"
+            message="${message}\nUser: ${{ steps.context.outputs.userName }} (${{ steps.context.outputs.userEmail }})"
+            message="${message}\nCommit: ${{ steps.context.outputs.commitMsg }}"
+            echo "::set-output name=message::${message}"
 
       - name: Push tag
         uses: mathieudutour/github-tag-action@v6.0
