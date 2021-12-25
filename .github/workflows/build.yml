@@ -196,13 +196,22 @@ jobs:
           echo "Head ref: ${{ github.head_ref }}"
           echo "Base ref: ${{ github.base_ref }}"
 
+#      - name: Create Release
+#        uses: marvinpinto/action-automatic-releases@latest
+#        with:
+#          automatic_release_tag: v${{needs.build.outputs.version}}
+#          repo_token: ${{ secrets.GITHUB_TOKEN }}
+#          title: Release v${{needs.build.outputs.version}}
+#          draft: true
+#          prerelease: false
+
       - name: Create Release
-        uses: marvinpinto/action-automatic-releases@latest
+        uses: ncipollo/release-action@v1
         with:
-          automatic_release_tag: latest
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          title: Release v${{ steps.version.outputs.version }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+          name: Release v${{needs.build.outputs.version}}
           draft: true
+          tag: latest
           prerelease: false
 
   release_on_develop:
@@ -216,4 +225,5 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           draft: false
+          tag: latest
           prerelease: true
