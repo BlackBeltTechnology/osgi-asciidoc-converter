@@ -13,6 +13,10 @@
     <name>Asciidoc :: OSGi converter services :: Karaf :: Features</name>
     <description>OSGi Asciidoc converter services karaf features</description>
 
+    <properties>
+        <sign.skip>true</sign.skip>
+    </properties>
+
     <build>
         <resources>
             <resource>
@@ -117,7 +121,7 @@
                                         <descriptor>file:${project.build.directory}/feature/feature.xml</descriptor>
                                     </descriptors>
                                     <distribution>org.apache.karaf.features:framework</distribution>
-                                    <javase>1.8</javase>
+                                    <javase>11</javase>
                                     <framework>
                                         <feature>framework</feature>
                                         <feature>shell-compat</feature>
