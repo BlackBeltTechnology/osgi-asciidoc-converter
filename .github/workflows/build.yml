@@ -137,9 +137,9 @@ jobs:
         if: ${{ !failure() && !cancelled() }}
         run: |-
             message=":check_mark_button: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-            message="${message}"$'\n'"Version: ${{ steps.version.outputs.version }}"
-            message="${message}"$'\n'"User: ${{ steps.context.outputs.userName }} (${{ steps.context.outputs.userEmail }})"
-            message="${message}"$'\n'"Commit: ${{ steps.context.outputs.commitMsg }}"
+            message="${message} Version: ${{ steps.version.outputs.version }}"
+            message="${message} User: ${{ steps.context.outputs.userName }} (${{ steps.context.outputs.userEmail }})"
+            message="${message} Commit: ${{ steps.context.outputs.commitMsg }}"
             echo "::set-output name=message::${message}"
 
       - name: Create failure message
@@ -147,8 +147,8 @@ jobs:
         if: ${{ failure() }}
         run: |-
             message=":cross_mark: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-            message="${message}"$'\n'"User: ${{ steps.context.outputs.userName }} (${{ steps.context.outputs.userEmail }})"
-            message="${message}"$'\n'"Commit: ${{ steps.context.outputs.commitMsg }}"
+            message="${message} User: ${{ steps.context.outputs.userName }} (${{ steps.context.outputs.userEmail }})"
+            message="${message} Commit: ${{ steps.context.outputs.commitMsg }}"
             echo "::set-output name=message::${message}"
 
       - name: Create cancel message
@@ -156,8 +156,8 @@ jobs:
         if: ${{ cancelled() }}
         run: |-
             message=":warning: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-            message="${message}"$'\n'"User: ${{ steps.context.outputs.userName }} (${{ steps.context.outputs.userEmail }})"
-            message="${message}"$'\n'"Commit: ${{ steps.context.outputs.commitMsg }}"
+            message="${message} User: ${{ steps.context.outputs.userName }} (${{ steps.context.outputs.userEmail }})"
+            message="${message} Commit: ${{ steps.context.outputs.commitMsg }}"
             echo "::set-output name=message::${message}"
 
       - name: Push tag
@@ -188,7 +188,7 @@ jobs:
     runs-on: judong
     timeout-minutes: 1
     needs: [build]
-    if: always() && needs.build.result == 'success' && contains('feature', github.ref)
+    if: ${{ always() && contains('feature', github.ref) && contains(needs.*.result, 'success') && !(contains(needs.*.result, 'failure')) }}
     steps:
       - name: Create Release
         uses: marvinpinto/action-automatic-releases@latest
@@ -203,7 +203,7 @@ jobs:
     runs-on: judong
     timeout-minutes: 1
     needs: [build]
-    if: always() && needs.build.result == 'success' && contains('develop', github.ref)
+    if: ${{ always() && contains('develop', github.ref) && contains(needs.*.result, 'success') && !(contains(needs.*.result, 'failure')) }}
     steps:
       - name: Create Release
         uses: ncipollo/release-action@v1
