@@ -211,7 +211,6 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           name: Release v${{needs.build.outputs.version}}
           tag: v${{needs.build.outputs.version}}
-          generateReleaseNotes: true
           draft: true
           prerelease: false
 
