@@ -18,7 +18,7 @@ jobs:
       SIGN_KEY: ${{ secrets.GPG_SECRET_KEYS }}
     outputs:
       version: ${{ steps.version.outputs.version }}
-      message: ${{ steps.sucess_message.outputs.message }}${{ steps.faliure_message.outputs.message }}${{ steps.cancel.outputs.message }}
+      message: ${{ steps.success_message.outputs.message }}${{ steps.failure_message.outputs.message }}${{ steps.cancel_message.outputs.message }}
 
     steps:
       - uses: actions/checkout@v2
@@ -170,6 +170,7 @@ jobs:
     runs-on: judong
     timeout-minutes: 1
     needs: [build]
+    if: always()
     steps:
       - name: Write message to file
         run: |-
@@ -187,7 +188,7 @@ jobs:
     runs-on: judong
     timeout-minutes: 1
     needs: [build]
-    if: ${{ github.event.workflow_run.conclusion == 'success' &&  contains('feature', github.ref)}}
+    if: needs.build.result == 'success' && contains('feature', github.ref))
     steps:
       - name: Create Release
         uses: marvinpinto/action-automatic-releases@latest
@@ -201,7 +202,8 @@ jobs:
   release_on_develop:
     runs-on: judong
     timeout-minutes: 1
-    if: ${{ github.event.workflow_run.conclusion == 'success' &&  contains('develop', github.ref)}}
+    needs: [build]
+    if: needs.build.result == 'success' && contains('develop', github.ref))
     steps:
       - name: Create Release
         uses: ncipollo/release-action@v1
