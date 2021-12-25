@@ -210,8 +210,8 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           name: Release v${{needs.build.outputs.version}}
+          tag: v${{needs.build.outputs.version}}
           draft: true
-          tag: latest
           prerelease: false
 
   release_on_develop:
