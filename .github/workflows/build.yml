@@ -18,7 +18,7 @@ jobs:
       SIGN_KEY: ${{ secrets.GPG_SECRET_KEYS }}
     outputs:
       version: ${{ steps.version.outputs.version }}
-      message: ${{ steps.message.outputs.message }}
+      message: ${{ steps.sucess_message.outputs.message }}${{ steps.faliure_message.outputs.message }}${{ steps.cancel.outputs.message }}
 
     steps:
       - uses: actions/checkout@v2
@@ -132,23 +132,29 @@ jobs:
       #          -DskipModules=true \
       #          deploy
 
-      - name: Create message
-        id: message
+      - name: Create success message
+        id: success_message
         if: ${{ !failure() && !cancelled() }}
-          run: |-
+        run: |-
             message=":check_mark_button: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
             message="${message}\nVersion: ${{ steps.version.outputs.version }}"
             message="${message}\nUser: ${{ steps.context.outputs.userName }} (${{ steps.context.outputs.userEmail }})"
             message="${message}\nCommit: ${{ steps.context.outputs.commitMsg }}"
             echo "::set-output name=message::${message}"
+
+      - name: Create failure message
+        id: failure_message
         if: ${{ failure() }}
-          run: |-
+        run: |-
             message=":cross_mark: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
             message="${message}\nUser: ${{ steps.context.outputs.userName }} (${{ steps.context.outputs.userEmail }})"
             message="${message}\nCommit: ${{ steps.context.outputs.commitMsg }}"
             echo "::set-output name=message::${message}"
+
+      - name: Create cancel message
+        id: cancel_message
         if: ${{ cancelled() }}
-          run: |-
+        run: |-
             message=":warning: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
             message="${message}\nUser: ${{ steps.context.outputs.userName }} (${{ steps.context.outputs.userEmail }})"
             message="${message}\nCommit: ${{ steps.context.outputs.commitMsg }}"
