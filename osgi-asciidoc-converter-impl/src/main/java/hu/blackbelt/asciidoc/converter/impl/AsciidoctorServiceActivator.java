@@ -8,6 +8,9 @@ import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
+import org.osgi.service.component.annotations.Reference;
+import org.osgi.service.log.LogService;
+
 import java.util.Hashtable;
 
 import static org.asciidoctor.jruby.AsciidoctorJRuby.Factory.create;
@@ -18,6 +21,7 @@ public class AsciidoctorServiceActivator {
 
     ServiceRegistration serviceRegistration;
     OSGiScriptingContainer container;
+
     @Activate
     public void activate(BundleContext bundleContext) {
         container = new OSGiScriptingContainer(bundleContext.getBundle());
