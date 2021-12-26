@@ -7,6 +7,12 @@ on:
     branches: [ develop ]
 
   workflow_dispatch:
+    inputs:
+      foo:
+        description: Make release version
+        type: boolean
+        required: false
+        default: false
 
 jobs:
   build:
@@ -21,7 +27,8 @@ jobs:
       message: ${{ steps.success_message.outputs.message }}${{ steps.failure_message.outputs.message }}${{ steps.cancel_message.outputs.message }}
 
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout repository
+        uses: actions/checkout@v2
         with:
           fetch-depth: 2
 
@@ -34,8 +41,6 @@ jobs:
         with:
           java-version: '11'
           distribution: 'zulu'
-          gpg-private-key: ${{ secrets.GPG_SECRET_KEYS }}
-          gpg-passphrase: ${{ secrets.GPG_PASSPHRASE }}
 
       - name: Calculate version number
         id: version
@@ -184,26 +189,26 @@ jobs:
           skype_ids: 19:0503749da2e44ed9910046678012bdf7@thread.skype
           send_msg_path: build.msg
 
-  release_on_feature:
+  release_on_develop:
     runs-on: judong
     timeout-minutes: 1
     needs: [build]
-    if: ${{ always() && contains(github.head_ref, 'feature') && contains(needs.*.result, 'success') && !(contains(needs.*.result, 'failure')) }}
+    if: ${{ always() && contains(github.head_ref, 'develop') && contains(needs.*.result, 'success') && !(contains(needs.*.result, 'failure')) }}
     steps:
-      - name: Create Release
+      - name: Print refs
         run: |- 
           echo "Ref: ${{ github.ref }}"
           echo "Head ref: ${{ github.head_ref }}"
           echo "Base ref: ${{ github.base_ref }}"
 
-#      - name: Create Release
-#        uses: marvinpinto/action-automatic-releases@latest
-#        with:
-#          automatic_release_tag: v${{needs.build.outputs.version}}
-#          repo_token: ${{ secrets.GITHUB_TOKEN }}
-#          title: Release v${{needs.build.outputs.version}}
-#          draft: true
-#          prerelease: false
+      #      - name: Create Release
+      #        uses: marvinpinto/action-automatic-releases@latest
+      #        with:
+      #          automatic_release_tag: v${{needs.build.outputs.version}}
+      #          repo_token: ${{ secrets.GITHUB_TOKEN }}
+      #          title: Release v${{needs.build.outputs.version}}
+      #          draft: false
+      #          prerelease: true
 
       - name: Create Release
         uses: ncipollo/release-action@v1
@@ -211,20 +216,5 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           name: v${{needs.build.outputs.version}}
           tag: v${{needs.build.outputs.version}}
-          generateReleaseNotes: true
-          draft: true
-          prerelease: false
-
-  release_on_develop:
-    runs-on: judong
-    timeout-minutes: 1
-    needs: [build]
-    if: ${{ always() && contains(github.head_ref, 'develop') && contains(needs.*.result, 'success') && !(contains(needs.*.result, 'failure')) }}
-    steps:
-      - name: Create Release
-        uses: ncipollo/release-action@v1
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
           draft: false
-          tag: latest
           prerelease: true
