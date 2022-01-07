@@ -125,6 +125,7 @@
                         <configuration>
                             <enableGeneration>true</enableGeneration>
                             <aggregateFeatures>true</aggregateFeatures>
+                            <installMode>manual</installMode>
                         </configuration>
                         <executions>
                             <execution>
@@ -135,18 +136,22 @@
                                 </goals>
                                 <configuration>
                                     <descriptors>
-                                        <descriptor>mvn:org.apache.karaf.features/framework/${karaf-version}/xml/features</descriptor>
-                                        <descriptor>mvn:org.apache.karaf.features/standard/${karaf-version}/xml/features</descriptor>
+                                        <descriptor>
+                                            mvn:org.apache.karaf.features/framework/${karaf-version}/xml/features
+                                        </descriptor>
+                                        <descriptor>
+                                            mvn:org.apache.karaf.features/standard/${karaf-version}/xml/features
+                                        </descriptor>
+                                        <descriptor>file:${project.build.directory}/feature/feature.xml</descriptor>
                                     </descriptors>
                                     <distribution>org.apache.karaf.features:framework</distribution>
                                     <javase>11</javase>
                                     <framework>
                                         <feature>framework</feature>
                                         <feature>shell-compat</feature>
-                                        <feature>asciidoc-converter-required-capabilities</feature>
                                     </framework>
                                     <features>
-                                        <feature>asciidoc-converter</feature>
+                                        <feature>osgi-encryption</feature>
                                     </features>
                                 </configuration>
                             </execution>
@@ -154,7 +159,6 @@
                     </plugin>
                 </plugins>
             </build>
-
             <dependencies>
                 <dependency>
                     <groupId>org.apache.karaf.features</groupId>
@@ -163,7 +167,6 @@
                     <scope>runtime</scope>
                     <version>${karaf-version}</version>
                 </dependency>
-
                 <dependency>
                     <groupId>org.apache.karaf.features</groupId>
                     <artifactId>standard</artifactId>
@@ -172,7 +175,6 @@
                     <scope>runtime</scope>
                     <version>${karaf-version}</version>
                 </dependency>
-
                 <dependency>
                     <groupId>org.apache.karaf.features</groupId>
                     <artifactId>enterprise</artifactId>
@@ -181,7 +183,6 @@
                     <scope>runtime</scope>
                     <version>${karaf-version}</version>
                 </dependency>
-
                 <dependency>
                     <groupId>org.apache.karaf.features</groupId>
                     <artifactId>spring</artifactId>
