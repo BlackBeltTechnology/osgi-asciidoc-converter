@@ -13,6 +13,10 @@
     <name>Asciidoc :: OSGi converter services :: Karaf :: Features</name>
     <description>OSGi Asciidoc converter services karaf features</description>
 
+    <properties>
+        <sign.skip>true</sign.skip>
+    </properties>
+
     <build>
         <resources>
             <resource>
