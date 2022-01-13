@@ -15,22 +15,18 @@ import org.ops4j.pax.exam.spi.reactors.ExamReactorStrategy;
 import org.ops4j.pax.exam.spi.reactors.PerClass;
 import org.osgi.framework.BundleContext;
 import org.osgi.service.log.LogService;
-
 import javax.inject.Inject;
 import java.io.*;
+import java.net.MalformedURLException;
 import java.nio.charset.StandardCharsets;
 import java.util.stream.Collectors;
-
-import static hu.blackbelt.asciidoc.converter.KarafTestUtil.karafConfig;
-import static hu.blackbelt.asciidoc.converter.KarafTestUtil.karafStandardRepo;
-import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
+import static org.ops4j.pax.exam.CoreOptions.maven;
 import static org.ops4j.pax.exam.OptionUtils.combine;
-import static org.ops4j.pax.exam.karaf.options.KarafDistributionOption.editConfigurationFilePut;
 import static org.ops4j.pax.exam.karaf.options.KarafDistributionOption.features;
 
 @RunWith(PaxExam.class)
 @ExamReactorStrategy(PerClass.class)
-public class ServicesTransactionITest {
+public class AsciidocConverterITest {
 
     @Inject
     LogService log;
@@ -44,23 +40,19 @@ public class ServicesTransactionITest {
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
-
     @Configuration
-    public Option[] config() throws FileNotFoundException {
+    public Option[] config() throws MalformedURLException {
 
-        return combine(karafConfig(this.getClass()),
 
-                features(karafStandardRepo(),
-                        "scr"),
-                mavenBundle("hu.blackbelt", "osgi-asciidoc-converter-api").versionAsInProject(),
-                mavenBundle("hu.blackbelt", "osgi-asciidoc-converter-impl").versionAsInProject(),
-
-                mavenBundle("org.jruby", "jruby-complete").versionAsInProject(),
-
-                editConfigurationFilePut("etc/org.ops4j.pax.web.cfg",
-                        "org.osgi.service.http.port", "8181")
+        return combine(KarafFeatureProvider.karafConfig(this.getClass()),
+                features(maven()
+                                .groupId("hu.blackbelt")
+                                .artifactId("osgi-asciidoc-converter-karaf-features")
+                                .versionAsInProject()
+                                .classifier("features")
+                                .type("xml"),
+                        "asciidoc-converter")
         );
-
     }
 
     @Test
@@ -74,8 +66,8 @@ public class ServicesTransactionITest {
 
         // Read content from bundle
         String content = new BufferedReader(
-            new InputStreamReader(this.getClass().getClassLoader().getResourceAsStream("/content.adoc"),
-                    StandardCharsets.UTF_8))
+                new InputStreamReader(this.getClass().getClassLoader().getResourceAsStream("/content.adoc"),
+                        StandardCharsets.UTF_8))
                 .lines()
                 .collect(Collectors.joining("\n"));
 
@@ -103,4 +95,10 @@ public class ServicesTransactionITest {
             target.write(buf, 0, length);
         }
     }
+
+    @Test
+    public void testAsciidoc() throws IOException {
+        Assert.assertTrue(true);
+    }
+
 }
