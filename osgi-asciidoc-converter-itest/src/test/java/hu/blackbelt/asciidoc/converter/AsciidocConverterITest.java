@@ -32,10 +32,8 @@ public class AsciidocConverterITest {
     @Inject
     BundleContext bundleContext;
 
-
     @Rule
     public ExpectedException thrown = ExpectedException.none();
-
 
     @Configuration
     public Option[] config() throws MalformedURLException {
@@ -50,7 +48,6 @@ public class AsciidocConverterITest {
                                 .type("xml"),
                         "asciidoc-converter")
         );
-
     }
 
     @Test

@@ -383,35 +383,6 @@
         </profile>
 
         <profile>
-            <id>release-p2-judong</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.codehaus.mojo</groupId>
-                        <artifactId>wagon-maven-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <id>upload-repository</id>
-                                <phase>deploy</phase>
-                                <goals>
-                                    <goal>upload</goal>
-                                </goals>
-                                <configuration>
-                                    <serverId>judong-nexus-distribution</serverId>
-                                    <fromDir>${basedir}/site/target/repository</fromDir>
-                                    <includes>*/**</includes>
-                                    <url>dav:https://nexus.judo.technology/repository/p2-judong/</url>
-                                    <toDir>${project-shortname}/${project.version}</toDir>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-
-
-        <profile>
             <id>release-judong</id>
             <build>
                 <plugins>
