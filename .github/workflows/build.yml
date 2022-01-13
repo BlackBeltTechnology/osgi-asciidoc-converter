@@ -162,6 +162,7 @@ jobs:
           ./mvnw -B -Dstyle.color=always \
           -Drevision=${{ steps.version.outputs.version }} \
           -Psign-artifacts \
+          -Prelease-local-stage \
           install
 
       # Phase 2 - Deploy to judo-ng nexus
