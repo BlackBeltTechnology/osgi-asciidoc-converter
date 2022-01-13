@@ -308,6 +308,12 @@
             <scope>provided</scope>
         </dependency>
 
+        <dependency>
+            <groupId>org.simplify4u.plugins</groupId>
+            <artifactId>sign-maven-plugin</artifactId>
+            <version>0.3.1</version>
+        </dependency>
+
     </dependencies>
 
     <dependencyManagement>
@@ -334,12 +340,6 @@
                 <groupId>hu.blackbelt</groupId>
                 <artifactId>osgi-asciidoc-converter-karaf-features</artifactId>
                 <version>${project.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.simplify4u.plugins</groupId>
-                <artifactId>sign-maven-plugin</artifactId>
-                <version>0.3.1</version>
             </dependency>
 
         </dependencies>
