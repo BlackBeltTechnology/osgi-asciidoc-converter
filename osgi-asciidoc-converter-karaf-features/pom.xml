@@ -172,6 +172,19 @@
                     <version>${karaf-version}</version>
                 </dependency>
 
+
+                <dependency>
+                    <groupId>hu.blackbelt</groupId>
+                    <artifactId>osgi-asciidoc-converter-api</artifactId>
+                    <version>${project.version}</version>
+                </dependency>
+
+                <dependency>
+                    <groupId>hu.blackbelt</groupId>
+                    <artifactId>osgi-asciidoc-converter-impl</artifactId>
+                    <version>${project.version}</version>
+                </dependency>
+
                 <dependency>
                     <groupId>org.apache.karaf.features</groupId>
                     <artifactId>standard</artifactId>
