@@ -30,7 +30,7 @@
         <asciidoctorj-version>2.5.2</asciidoctorj-version>
         <jruby-version>9.2.19.0</jruby-version>
 
-        <surefire-version>3.0.0-M7</surefire-version>
+        <surefire-version>3.0.0-M5</surefire-version>
         <!--suppress UnresolvedMavenProperty -->
         <logback-test-config>${maven.multiModuleProjectDirectory}/logback-test.xml</logback-test-config>
 
@@ -145,13 +145,21 @@
 
                 <plugin>
                     <artifactId>maven-surefire-plugin</artifactId>
-                    <version>3.0.0-M5</version>
+                    <version>${surefire-version}</version>
                     <configuration>
-                        <argLine>-Dfile.encoding=UTF-8</argLine>
                         <trimStackTrace>false</trimStackTrace>
                         <systemPropertyVariables>
-                            <log4j.configuration>${log4j.configuration}</log4j.configuration>
+                            <logback.configurationFile>${logback-test-config}</logback.configurationFile>
                         </systemPropertyVariables>
+                        <!--suppress UnresolvedMavenProperty -->
+                        <argLine>
+                            ${jacoco.agent}
+                            -Dfile.encoding=UTF-8
+                            --add-opens java.base/java.lang=ALL-UNNAMED
+                            --add-opens java.base/java.util=ALL-UNNAMED
+                            --add-opens java.base/java.time=ALL-UNNAMED
+                        </argLine>
+                        <trimStackTrace>false</trimStackTrace>
                     </configuration>
                 </plugin>
 
