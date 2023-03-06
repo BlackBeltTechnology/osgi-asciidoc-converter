@@ -147,19 +147,11 @@
                     <artifactId>maven-surefire-plugin</artifactId>
                     <version>${surefire-version}</version>
                     <configuration>
+                        <argLine>-Dfile.encoding=UTF-8</argLine>
                         <trimStackTrace>false</trimStackTrace>
                         <systemPropertyVariables>
-                            <logback.configurationFile>${logback-test-config}</logback.configurationFile>
+                            <log4j.configuration>${log4j.configuration}</log4j.configuration>
                         </systemPropertyVariables>
-                        <!--suppress UnresolvedMavenProperty -->
-                        <argLine>
-                            ${jacoco.agent}
-                            -Dfile.encoding=UTF-8
-                            --add-opens java.base/java.lang=ALL-UNNAMED
-                            --add-opens java.base/java.util=ALL-UNNAMED
-                            --add-opens java.base/java.time=ALL-UNNAMED
-                        </argLine>
-                        <trimStackTrace>false</trimStackTrace>
                     </configuration>
                 </plugin>
 
