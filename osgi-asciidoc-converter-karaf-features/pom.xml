@@ -211,6 +211,16 @@
                     <scope>runtime</scope>
                     <version>${karaf-version}</version>
                 </dependency>
+
+                <dependency>
+                    <groupId>hu.blackbelt</groupId>
+                    <artifactId>osgi-asciidoc-converter-api</artifactId>
+                </dependency>
+
+                <dependency>
+                    <groupId>hu.blackbelt</groupId>
+                    <artifactId>osgi-asciidoc-converter-impl</artifactId>
+                </dependency>
             </dependencies>
         </profile>
     </profiles>
