@@ -141,13 +141,11 @@
                                     <descriptors>
                                         <descriptor>mvn:org.apache.karaf.features/framework/${karaf-version}/xml/features</descriptor>
                                         <descriptor>mvn:org.apache.karaf.features/standard/${karaf-version}/xml/features</descriptor>
-                                        <descriptor>mvn:org.apache.karaf.features/enterprise/${karaf-version}/xml/features</descriptor>
-                                        <descriptor>mvn:org.apache.karaf.features/spring/${karaf-version}/xml/features</descriptor>
                                         <descriptor>file:${project.build.directory}/feature/feature-required-capabilities.xml</descriptor>
                                         <descriptor>file:${project.build.directory}/feature/feature.xml</descriptor>
                                     </descriptors>
                                     <distribution>org.apache.karaf.features:framework</distribution>
-                                    <javase>17</javase>
+                                    <javase>21</javase>
                                     <framework>
                                         <feature>framework</feature>
                                         <feature>shell-compat</feature>
@@ -202,16 +200,7 @@
                     <scope>runtime</scope>
                     <version>${karaf-version}</version>
                 </dependency>
-
-                <dependency>
-                    <groupId>org.apache.karaf.features</groupId>
-                    <artifactId>spring</artifactId>
-                    <classifier>features</classifier>
-                    <type>xml</type>
-                    <scope>runtime</scope>
-                    <version>${karaf-version}</version>
-                </dependency>
-
+                
                 <dependency>
                     <groupId>hu.blackbelt</groupId>
                     <artifactId>osgi-asciidoc-converter-api</artifactId>
