@@ -57,3 +57,7 @@ wercker.env
 /**/.wercker
 /**/GSModel.log*
 .release
+.claude
+.gemini
+.opencode
+.agent
