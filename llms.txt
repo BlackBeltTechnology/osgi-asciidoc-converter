@@ -1,0 +1,33 @@
+# OSGi AsciiDoc Converter
+
+> Wraps AsciidoctorJ as an OSGi service for AsciiDoc document conversion (PDF, EPUB3, HTML, diagrams) within Apache Karaf containers.
+
+Key facts:
+- Java 21, Maven 3.9.4+ multi-module project (4 modules)
+- AsciidoctorJ 2.5.2 with JRuby 9.2.19.0 for Ruby runtime in OSGi
+- Deploys as a Karaf 4.4.7 feature with Declarative Services
+- Uses OSGi R6 component model with Apache Felix maven-bundle-plugin
+- Integration tests via PAX Exam spinning up real Karaf containers
+- License: Apache 2.0
+
+## Docs
+
+- [AGENTS.md](AGENTS.md): Comprehensive project documentation — architecture, build commands, technology stack, and development guide
+- [CONTRIBUTING.md](CONTRIBUTING.md): Development setup and contribution guidelines
+- [.github/CIFLOW.md](.github/CIFLOW.md): Branching strategy, version numbering, and CI/CD workflow details
+
+## Modules — Service Layer
+
+- [osgi-asciidoc-converter-api/pom.xml](osgi-asciidoc-converter-api/pom.xml): OSGi bundle defining the `AsciidocConverterService` marker interface — the service contract for consumers
+- [osgi-asciidoc-converter-impl/pom.xml](osgi-asciidoc-converter-impl/pom.xml): OSGi bundle that creates an Asciidoctor instance via JRuby and registers it in the OSGi service registry, embedding all AsciidoctorJ dependencies (PDF, diagrams, EPUB3)
+
+## Modules — Packaging & Testing
+
+- [osgi-asciidoc-converter-karaf-features/src/main/feature/feature.xml](osgi-asciidoc-converter-karaf-features/src/main/feature/feature.xml): Karaf feature descriptor bundling SCR, JRuby, API, and impl for one-command deployment
+- [osgi-asciidoc-converter-itest/pom.xml](osgi-asciidoc-converter-itest/pom.xml): PAX Exam integration tests — spins up a Karaf container, deploys the feature, and verifies PDF generation with custom themes
+
+## Optional
+
+- [.github/workflows/build.yml](.github/workflows/build.yml): Main CI/CD pipeline (build, deploy, tag, release)
+- [LICENSE.txt](LICENSE.txt): Apache License 2.0
+- [pom.xml](pom.xml): Parent POM with dependency versions, plugin management, and build profiles
